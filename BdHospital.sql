@@ -4,7 +4,7 @@ GO
 
 CREATE TABLE [dbo].[Pacientes](
 	[Num_SeguridadSocial] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
-	[Num_HistorialClinico] [int] IDENTITY (100,1) NOT NULL UNIQUE,
+	[Num_HistorialClinico] [int] NOT NULL UNIQUE,
 	[Nombre] [varchar](50) NOT NULL,
 	[Apellido] [varchar](50) NOT NULL,
 	[Domicilio] [varchar](30) NOT NULL,
@@ -44,6 +44,14 @@ CREATE TABLE [dbo].[Contacto](
 	)
 GO
 
+/* Tabla creada para Relacionar la tabla "Contactos" con la tabla "Pacientes" */
+CREATE TABLE [dbo].[ContactoPaciente](
+	[IdContactoPaciente] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[IdContacto] [int] FOREIGN KEY (IdContacto) REFERENCES [dbo].[Contacto](IdContacto),
+	[Num_SeguridadSocial] [int] FOREIGN KEY (Num_SeguridadSocial) REFERENCES [dbo].[Pacientes](Num_SeguridadSocial),
+	)
+GO
+
 /* Tabla creada para determinar las posibles especialidades que pueden tener los médicos */
 CREATE TABLE [dbo].[Especialidades](
 	[IdEspecialidad] [int] IDENTITY(200,1) NOT NULL PRIMARY KEY,
@@ -59,5 +67,21 @@ CREATE TABLE [dbo].[EspecialidadesMedicos](
 	)
 GO
 
-/*
+/* Tabla para determinar los posibles Cargos que tendrá el personal */ 
+CREATE TABLE [dbo].[Cargos](
+	[IdCargo] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[Nombre] [varchar] (50) NOT NULL,
+	[Descripcion] [varchar] (50) NOT NULL,
+	)
+GO
+
+/* Tabla para especificar los Cargos que se ejecutarán, relacionando la tabla "Cargos" y la tabla "Médicos" */
+CREATE TABLE [dbo].[CargosMedicos](
+	[IdCargoMedico] [int] IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	[IdMedico] [int] FOREIGN KEY (IdMedico) REFERENCES [dbo].[Medicos](IdMedico),
+	[IdCargo] [int] FOREIGN KEY (IdCargo) REFERENCES [dbo].[Cargos](IdCargo),
+	)
+GO
+
+
 
